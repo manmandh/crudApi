@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh Sửa Sản Phẩm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 32px;
+        }
+
+        h2 {
+            margin-bottom: 24px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+        td {
+            padding: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            margin-top: 16px;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 16px;
+            text-decoration: none;
+        }
+
+        .current-image {
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            display: inline-block;
+        }
+        .current-image img {
+            max-height: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Chỉnh Sửa Sản Phẩm</h2>
+
+<form th:action="@{/admin/product/edit/{id}(id=${product.id})}" method="post" th:object="${request}" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td><label>Tên sản phẩm:</label></td>
+            <td><input type="text" th:field="*{name}" required/></td>
+        </tr>
+        <tr>
+            <td><label>Giá:</label></td>
+            <td><input type="number" th:field="*{price}" step="0.01" required/></td>
+        </tr>
+        <tr>
+            <td><label>Ảnh hiện tại:</label></td>
+            <td>
+                <div th:if="${product.image != null}" class="current-image">
+                    <img th:src="@{/admin/product/image/{id}(id=${product.id})}" alt="Ảnh sản phẩm"/>
+                </div>
+                <input type="file" name="imageFile" accept="image/*"/>
+                <small>(Để trống nếu không muốn thay đổi ảnh)</small>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Loại hàng:</label></td>
+            <td>
+                <select th:field="*{categoryId}">
+                    <option value="">-- Chọn loại hàng --</option>
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat.id}"
+                            th:text="${cat.name}">Loại
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <button type="submit">Cập nhật sản phẩm</button>
+</form>
+
+<a th:href="@{/admin/product/index}">← Quay lại danh sách sản phẩm</a>
+
+</body>
+</html>

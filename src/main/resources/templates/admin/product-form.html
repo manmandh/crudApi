@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm Sản Phẩm Mới</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 32px;
+        }
+
+        h2 {
+            margin-bottom: 24px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+        td {
+            padding: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            margin-top: 16px;
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 16px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Thêm Mới Sản Phẩm</h2>
+
+<form th:action="@{/admin/product/create}" method="post" th:object="${request}" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td><label>Tên sản phẩm:</label></td>
+            <td><input type="text" th:field="*{name}" required/></td>
+        </tr>
+        <tr>
+            <td><label>Giá:</label></td>
+            <td><input type="number" th:field="*{price}" step="0.01" required/></td>
+        </tr>
+        <tr>
+            <td><label>Ảnh</label></td>
+            <td><input type="file" name="imageFile" accept="image/*" required/></td>
+        </tr>
+        <tr>
+            <td><label>Loại hàng:</label></td>
+            <td>
+                <select th:field="*{categoryId}">
+                    <option value="">-- Chọn loại hàng --</option>
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat.id}"
+                            th:text="${cat.name}">Loại
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <button type="submit">Lưu sản phẩm</button>
+</form>
+
+<a th:href="@{/admin/product/index}">← Quay lại danh sách sản phẩm</a>
+
+</body>
+</html>
